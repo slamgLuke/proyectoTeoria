@@ -39,8 +39,8 @@ void ganadores(vector<int> llegaron, vector<int> pasos) {
 
     // Lista del orden de llegada. Cuando todos llegan el programa termina
     while(llegaron.size() < 8) { 
-        for (const int &i : siguen) {
-            if (verify(&recorridos[i], i, pasos)) {
+        for (int i : siguen) {
+            if (verify(&(recorridos[i]), i, pasos)) {
                 siguen.erase(siguen.begin()+i);
                 llegaron.push_back(i);
             }
@@ -60,6 +60,8 @@ int main(){
 
     // main loop
     desplazamiento(recorridos, pasos);
+
+    cout << "listo";
 
     return 0;
 }
