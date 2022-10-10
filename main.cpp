@@ -15,7 +15,7 @@ int menosPasos(vector<int> pasos) {
 }
 
 
-bool verify(int *recorrido, int index, vector<int> &pasos){
+bool verify(int *recorrido, int index, vector<int> &pasos) {
     float x = float(rand()%100) / 100.0;
 
     if (x > 0.8)
@@ -54,8 +54,7 @@ void ganadores(vector<int> llegaron, vector<int> pasos, vector<string> nombres) 
 }
 
 
- void desplazamiento(vector<int> &recorridos, vector<int> &pasos, vector <int> &llegaron){
-    // vectores
+ void desplazamiento(vector<int> &recorridos, vector<int> &pasos, vector <int> &llegaron) {
     vector<int> siguen = {0, 1, 2, 3, 4, 5, 6, 7};
 
     // Lista del orden de llegada. Cuando todos llegan el programa termina
