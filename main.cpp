@@ -3,56 +3,63 @@
 #include <vector>
 using namespace std;
 
-void verify(float *carro, float x, vector<double> *llegaron){
-    if (*carro >= 300000){
-        *llegaron.push_back(*carro);}
-    else if(x > 0.8){
-        *carro += 830000;}
-    else if(x < 0.8 && x > 0.6){
-        *carro += 500000;}
-    else if(x < 0.6 && x > 0.4){
-        *carro += 300000;}
-    else if(x < 0.4 && x > 0.2){
-        *carro += 100000;}
-    else{
-        *carro += 200000;}
-}
-void desplazamiento(float *C1, float *C2, float *C3, float *C4, float *C5, float *C6, float *C7, float *C8){
-    // variables
-    float x; vector<double> llegaron;
-    // Creo una lista, si esta llena, entonces el programa termina.
-    while(llegaron.size() < 8){ 
-        //C1
-        x = rand()%10; x = x/10;
-        verify(&*C1, x, &llegaron);
-        //C2
-        x = rand()%10; x = x/10;
-        verify(&*C2, x, &llegaron);
-        //C3
-        x = rand()%10; x = x/10;
-        verify(&*C3, x, &llegaron);
-        //C4
-        x = rand()%10; x = x/10;
-        verify(&*C4, x, &llegaron);
-        //C5
-        x = rand()%10; x = x/10;
-        verify(&*C5, x, &llegaron);
-        //C6
-        x = rand()%10; x = x/10;
-        verify(&*C6, x, &llegaron);
-        //C7
-        x = rand()%10; x = x/10;
-        verify(&*C7, x, &llegaron);
-        //C8
-        x = rand()%10; x = x/10;
-        verify(&*C8, x, &llegaron);
+bool verify(float *recorrido, int index, vector<int> &pasos){
+    float x = float(rand()%10) / 10;
+
+    if (x > 0.8) {
+        *recorrido += 83;}
+    else if (x <= 0.8 && x > 0.6) {
+        *recorrido += 50;}
+    else if (x <= 0.6 && x > 0.4) {
+        *recorrido += 30;}
+    else if (x <= 0.4 && x > 0.2) {
+        pasos[index] += 2;}
+    else {
+        *recorrido -= 10;}
+
+    if (*recorrido >= 300000) {
+        return true;
     }
-    //----------------------------------
+    return false;
 }
+
+
+void ganadores(vector<int> llegaron, vector<int> pasos) {
+    string nombres[8] = {"Toreto", "RayoMc", "Mate", "GhostRider", "BatMovil", "MysteryMachine", "CJsBike", "LaChama"};
+    for (int i=0; i<8; i++) {
+        cout << "Llego en " << i << " puesto: " << nombres[llegaron[i]] << endl;
+    }
+}
+
+
+ void desplazamiento(vector<float> &recorridos, vector<int> &pasos){
+    // variables
+    vector<int> llegaron;    
+    vector<int> siguen = {0, 1, 2, 3, 4, 5, 6, 7};
+
+    // Lista del orden de llegada. Cuando todos llegan el programa termina
+    while(llegaron.size() < 8) { 
+        for (const int &i : siguen) {
+            if (verify(&recorridos[i], i, pasos)) {
+                siguen.erase(siguen.begin()+i);
+                llegaron.push_back(i);
+            }
+            pasos[i]++;
+        }
+    }
+    // Fin
+    ganadores(llegaron, pasos);
+}
+
+
 int main(){
-    // 8 autos, 8 carriles de 300K(300 000m), gana el que llegue a 300km en la menor cantidad de pasos.   
-    float Toreto, RayoMc, Mate, GosthRider, BatMovil, BanMystery, CJsBike, LaChama;
-    // modulo de random-----------------
     srand(time(NULL));
-    desplazamiento(&Toreto, &RayoMc, &Mate, &GosthRider, &BatMovil, &BanMystery , &CJsBike, &LaChama);
+    // 8 autos, 8 carriles de 300K(300 000m), gana el que llegue a 300km en la menor cantidad de pasos.
+    vector<float> recorridos = {0,0,0,0,0,0,0,0};
+    vector<int> pasos = {0,0,0,0,0,0,0,0};
+
+    // main loop
+    desplazamiento(recorridos, pasos);
+
+    return 0;
 }
